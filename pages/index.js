@@ -1,7 +1,21 @@
 import Head from 'next/head'
+import { useState } from 'react'
 import styles from '@/styles/Home.module.css'
 
 export default function Home ({ results }) {
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const handleSearch = e => {
+    setSearchQuery(e.target.value)
+  }
+
+  const filteredResults =
+    results && results.shop
+      ? results.shop.filter(data =>
+          data.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : []
+
   return (
     <>
       <Head>
@@ -12,11 +26,22 @@ export default function Home ({ results }) {
       </Head>
       <main className={styles.main}>
         <h1>ホットペッパー 沖縄グルメサーチ</h1>
+        <input
+          type='text'
+          placeholder='店舗を検索...'
+          value={searchQuery}
+          onChange={handleSearch}
+        />
         <ul>
-          {results && results.shop ? (
-            results.shop.map((data, i) => <li key={i}>{data.name}</li>)
+          {filteredResults.length > 0 ? (
+            filteredResults.map((data, i) => (
+              <li key={i}>
+                {data.name}
+                {/* 他の店舗情報もここに追加 */}
+              </li>
+            ))
           ) : (
-            <li>No data available</li>
+            <li>No matching results</li>
           )}
         </ul>
       </main>
@@ -33,7 +58,7 @@ export async function getServerSideProps () {
 
   // 外部APIからデータをFetchします。
   const res = await fetch(
-    `${baseUrl}?key=${apiKey}&service_area=${serviceArea}&format=${format}`
+    `${baseUrl}?key=${apiKey}&serviceArea=${serviceArea}&format=${format}`
   )
 
   if (!res.ok) {
