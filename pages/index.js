@@ -32,7 +32,7 @@ export default function Home ({ results }) {
           value={searchQuery}
           onChange={handleSearch}
         />
-        <ul>
+        <>
           {filteredResults.length > 0 ? (
             filteredResults.map((data, i) => (
               <li key={i}>
@@ -43,7 +43,7 @@ export default function Home ({ results }) {
           ) : (
             <li>No matching results</li>
           )}
-        </ul>
+        </>
       </main>
     </>
   )
@@ -58,7 +58,7 @@ export async function getServerSideProps () {
 
   // 外部APIからデータをFetchします。
   const res = await fetch(
-    `${baseUrl}?key=${apiKey}&serviceArea=${serviceArea}&format=${format}`
+    `${baseUrl}?key=${apiKey}&service_area=${serviceArea}&format=${format}`
   )
 
   if (!res.ok) {

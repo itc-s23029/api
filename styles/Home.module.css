@@ -1,0 +1,18 @@
+.main {
+  text-align: center;
+  background: mediumblue;
+}
+
+.main h1 {
+  color: orangered;
+  font-size: 50px;
+}
+
+.main li {
+  color: white;
+  font-size: 25px;
+}
+
+.input {
+  font-size: 35px;
+}
